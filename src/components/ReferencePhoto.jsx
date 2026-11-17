@@ -17,7 +17,7 @@ export const crops={
  story:{file:'story-reference.png',rect:[36,2,64,49],ratio:1672/941},
  contact:{file:'contact-reference.png',rect:[0,0,45,90],ratio:2},
 };
-export default function ReferencePhoto({kind='hero',className='',label='Ilustrasi hidangan dari referensi desain',...props}){
+export default function ReferencePhoto({kind='hero',className='',fit='slice',label='Ilustrasi hidangan dari referensi desain',...props}){
  const {file,rect:[x,y,w,h],ratio}=crops[kind];
- return <div role="img" aria-label={label} className={`reference-photo ${className}`} style={{aspectRatio:ratio*w/h}} {...props}><svg aria-hidden="true" width="100%" height="100%" viewBox={`${x*ratio} ${y} ${w*ratio} ${h}`} preserveAspectRatio="xMidYMid slice" style={{display:'block',overflow:'hidden'}}><image href={`${import.meta.env.BASE_URL}images/references/${file}`} width={100*ratio} height="100"/></svg></div>;
+ return <div role="img" aria-label={label} className={`reference-photo ${className}`} style={{aspectRatio:ratio*w/h}} {...props}><svg aria-hidden="true" width="100%" height="100%" viewBox={`0 0 ${w*ratio} ${h}`} preserveAspectRatio={`xMidYMid ${fit}`} style={{display:'block',overflow:'hidden'}}><svg width={w*ratio} height={h} viewBox={`${x*ratio} ${y} ${w*ratio} ${h}`} style={{overflow:'hidden'}}><image href={`${import.meta.env.BASE_URL}images/references/${file}`} width={100*ratio} height="100"/></svg></svg></div>;
 }
