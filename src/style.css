@@ -99,3 +99,5 @@
  .lightbox{padding:65px 12px}
  .lightbox figure>.reference-photo{aspect-ratio:16/9!important;max-height:calc(100svh - 240px)}
 }
+/* Show the hero Google rating on desktop only. */
+@media(max-width:800px){.reference-hero .desktop-hero-rating{display:none}}
