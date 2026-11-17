@@ -68,3 +68,26 @@
  .reference-hero .mobile-hero-heading{color:#fff}
  .reference-hero .art-disclaimer{color:#fff;text-shadow:0 1px 4px #000}
 }
+/* Compact mobile hero: image and copy share the same frame. */
+@media(max-width:800px){
+ .reference-hero{padding:95px 0 27px;min-height:0;height:auto}
+ .reference-hero-art{inset:79px 0 0;width:100%;height:auto;max-width:none;aspect-ratio:auto}
+ .reference-hero-art .mobile-hero-photo{width:100%;height:100%}
+ .reference-hero-copy{position:relative;z-index:1;padding:0;max-width:100%;text-shadow:0 2px 7px #000,0 1px 3px #000}
+ .reference-hero .mobile-hero-heading{font-size:clamp(28px,6.2vw,44px);line-height:1.02;max-width:88%;letter-spacing:-.8px}
+ .mobile-hero-heading>span{font-size:clamp(31px,7vw,50px);white-space:normal;line-height:1.04;letter-spacing:-.5px;max-width:100%}
+ .reference-hero-copy>.mobile-hero-description{font-size:clamp(10px,2.25vw,14px);line-height:1.5;max-width:65%;margin-top:10px}
+ .reference-hero .reference-rating{margin-top:12px;padding:5px 11px;gap:8px}
+ .reference-hero .reference-rating>svg{width:21px;height:21px}
+ .reference-hero .reference-rating strong{font-size:21px}
+ .reference-hero .reference-rating strong small{font-size:15px}
+ .reference-hero .reference-rating>span{font-size:9px;padding-left:9px}
+ .reference-hero .hero-buttons{margin-top:13px;gap:8px;max-width:100%;flex-wrap:wrap}
+ .reference-hero .hero-buttons .button{min-height:44px;font-size:11px;padding:10px 17px}
+ .reference-hero .art-disclaimer{bottom:6px;font-size:6px;max-width:calc(100% - 36px)}
+}
+@media(min-width:481px) and (max-width:800px){
+ .reference-hero{padding-top:99px;padding-bottom:30px}
+ .reference-hero-copy>.mobile-hero-description{max-width:51%;font-size:14px}
+ .reference-hero .hero-buttons .button{font-size:13px;padding-inline:23px}
+}

@@ -1,6 +1,7 @@
 ﻿import React from 'react';
 // ViewBox crops only the displayed region; user-supplied raster sources remain intact.
 export const crops={
+ mobileWideHero:{file:'hero-reference.png',rect:[48,25,52,52],ratio:1664/941},
  mobileHero:{file:'mobile-reference.png',rect:[60,6,40,37],ratio:1024/1536},
  mobileSteak:{file:'mobile-reference.png',rect:[4.5,65.4,44,10.8],ratio:1024/1536},
  mobileChicken:{file:'mobile-reference.png',rect:[51.5,65.4,44,10.8],ratio:1024/1536},
