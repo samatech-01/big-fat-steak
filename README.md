@@ -9,7 +9,7 @@ npm install
 npm run dev
 ```
 
-Buka URL yang dicetak Vite (umumnya http://127.0.0.1:5173/big-fat-steak/).
+Buka URL yang dicetak Vite (umumnya http://127.0.0.1:5173/).
 Pada PowerShell dengan execution policy terbatas, gunakan npm.cmd.
 
 ```sh
@@ -17,7 +17,7 @@ npm run build
 npm run preview
 ```
 
-Hasil produksi berada di dist/. Untuk XAMPP, sajikan isi dist melalui Apache; source JSX tidak dijalankan langsung oleh Apache. Base aset dikonfigurasi ke /big-fat-steak/ untuk GitHub Pages.
+Hasil produksi berada di dist/. Untuk XAMPP, sajikan isi dist melalui Apache; source JSX tidak dijalankan langsung oleh Apache. Base aset mengikuti VITE_DEPLOY_TARGET: github memakai /big-fat-steak/, cloudflare memakai /.
 
 ## Struktur
 
@@ -69,4 +69,40 @@ Pengaturan satu kali di repository: Settings → Pages → Build and deployment 
 
 URL publik yang dituju: https://samatech-01.github.io/big-fat-steak/
 
-Untuk lokal, jalankan npm run dev dan buka URL Vite dengan akhiran /big-fat-steak/. Untuk hasil produksi, npm run build kemudian npm run preview dan buka http://127.0.0.1:4173/big-fat-steak/. Seluruh URL gambar referensi menggunakan import.meta.env.BASE_URL. Favicon dan metadata gambar memakai substitusi %BASE_URL% dari Vite.
+Untuk lokal tanpa environment tambahan, jalankan npm run dev dan buka http://127.0.0.1:5173/. Untuk hasil produksi root, npm run build:cloudflare kemudian npm run preview dan buka http://127.0.0.1:4173/. Seluruh URL gambar referensi menggunakan import.meta.env.BASE_URL. Favicon dan metadata gambar memakai substitusi %BASE_URL% dari Vite.
+
+## Dua target deployment: GitHub Pages dan Cloudflare Workers
+
+Vite membaca VITE_DEPLOY_TARGET dari environment proses atau file .env sesuai mode melalui loadEnv. Nilai yang diterima: github dan cloudflare; nilai lain membuat build gagal agar salah konfigurasi terlihat. Default adalah cloudflare (base /), termasuk localhost. GitHub Actions secara eksplisit menetapkan VITE_DEPLOY_TARGET=github pada langkah build.
+
+Perintah lintas platform (PowerShell dapat memakai npm.cmd):
+
+- npm run build:github → dist dengan base /big-fat-steak/.
+- npm run build:cloudflare → dist dengan base /.
+- npm run build → mengikuti VITE_DEPLOY_TARGET, default /.
+
+Kedua target menulis ke dist yang sama. Bangun target yang tepat sebelum deploy. scripts/build-target.mjs menetapkan environment child process tanpa paket tambahan. Komponen, desain, konten, dan animasi tidak diubah.
+
+### Pengaturan Cloudflare Workers Builds
+
+- Root directory: root repository (folder berisi package.json dan wrangler.json).
+- Production branch: main.
+- Build command: npm run build:cloudflare.
+- Deploy command: npx wrangler deploy.
+- Build environment variable: VITE_DEPLOY_TARGET=cloudflare (bukan hanya runtime variable Worker).
+- Static assets: ./dist, sudah ditetapkan dalam wrangler.json.
+- Worker name pada dashboard harus sama dengan name di wrangler.json, yaitu big-fat-steak. Jika Worker yang sudah ada memakai nama berbeda, sesuaikan name atau gunakan --name NAMA_WORKER_YANG_SUDAH_ADA pada deploy command.
+
+wrangler.json juga menetapkan build.command=npm run build:cloudflare, sehingga deploy langsung melalui Wrangler selalu membangun aset untuk root meskipun dist sebelumnya berisi hasil GitHub Pages. Build dashboard dan custom build Wrangler dapat berjalan dua kali; aman, namun jika ingin menghindarinya gunakan npx wrangler deploy --no-build setelah build dashboard berhasil.
+
+Setelah push, pastikan pengaturan di atas berlaku lalu redeploy Worker. Konfigurasi dashboard dan website Cloudflare live belum diverifikasi dari lingkungan ini karena URL Worker dan sesi akun tidak tersedia.
+
+### Temuan white screen
+
+Konfigurasi lama mengunci base=/big-fat-steak/ untuk semua build. Jika dist itu disajikan oleh Worker pada root /, HTML menunjuk ke /big-fat-steak/assets/... sementara berkas berada pada /assets/.... Browser dapat menerima 404 atau fallback HTML ketika meminta JavaScript; aplikasi React gagal dijalankan. Ini merupakan penyebab yang ditemukan di source, bukan hasil pengamatan console pada deployment live.
+
+Referensi SVG menggunakan import.meta.env.BASE_URL; favicon dan og:image menggunakan %BASE_URL%; entry JavaScript dan CSS diproses oleh Vite. Semua mengikuti target build. Navigasi halaman menggunakan anchor # dan tidak memerlukan base router.
+
+Validasi kedua target mencakup build produksi, HTML tanpa placeholder tersisa, prefix bundle, HTTP 200 dengan MIME yang sesuai untuk JavaScript/CSS/favicon dan enam gambar referensi, serta localhost root. Pemeriksaan visual live tetap diperlukan setelah redeploy.
+
+Wrangler CLI 4.163.0: deploy --dry-run berhasil, custom build memakai target cloudflare dan mendeteksi 25 berkas static assets di dist. Dry-run tidak menerbitkan website.
