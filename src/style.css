@@ -58,3 +58,13 @@
  .container{width:calc(100% - 56px)}.header .mobile-brand-title{font-size:17px}.header .mobile-brand-title small{font-size:10px}.header .reference-brand .reference-photo{width:65px;height:62px}.desktop-nav{gap:14px;font-size:11px}.desktop-visit{display:none}.nav{gap:20px}.reference-hero{padding-top:140px;min-height:620px}.reference-hero .mobile-hero-heading{font-size:49px}.mobile-hero-heading>span{font-size:56px}.reference-hero-copy>.mobile-hero-description{font-size:14px;max-width:310px}.reference-hero-art{left:41%}.hero-buttons .button{font-size:13px;padding-inline:23px}.benefit-bar strong{font-size:12px}.benefit-bar svg{width:31px}.reference-menu .category-tabs{gap:8px}.reference-menu .category-tabs button{padding-inline:17px;font-size:11px}.mobile-food-card h3{font-size:21px}.mobile-food-card strong{font-size:24px}
 }
 @media(prefers-reduced-motion:reduce){.mobile-food-card:hover{transform:none}}
+/* Full-width mobile hero photograph without the dark overlay. */
+@media(max-width:800px){
+ .reference-hero-art{inset:0;max-width:none;margin:0;height:100%}
+ .reference-hero-overlay{display:none}
+ .reference-hero .mobile-hero-photo{background:transparent}
+ .reference-hero-copy{text-shadow:0 2px 7px #000,0 1px 3px #000}
+ .reference-hero-copy>.mobile-hero-description{color:#fff}
+ .reference-hero .mobile-hero-heading{color:#fff}
+ .reference-hero .art-disclaimer{color:#fff;text-shadow:0 1px 4px #000}
+}
