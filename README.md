@@ -9,7 +9,7 @@ npm install
 npm run dev
 ```
 
-Buka URL yang dicetak Vite (umumnya http://127.0.0.1:5173).
+Buka URL yang dicetak Vite (umumnya http://127.0.0.1:5173/big-fat-steak/).
 Pada PowerShell dengan execution policy terbatas, gunakan npm.cmd.
 
 ```sh
@@ -17,7 +17,7 @@ npm run build
 npm run preview
 ```
 
-Hasil produksi berada di dist/. Untuk XAMPP, sajikan isi dist melalui Apache; source JSX tidak dijalankan langsung oleh Apache. Base aset relatif mendukung pemasangan pada subfolder.
+Hasil produksi berada di dist/. Untuk XAMPP, sajikan isi dist melalui Apache; source JSX tidak dijalankan langsung oleh Apache. Base aset dikonfigurasi ke /big-fat-steak/ untuk GitHub Pages.
 
 ## Struktur
 
@@ -26,7 +26,7 @@ Hasil produksi berada di dist/. Untuk XAMPP, sajikan isi dist melalui Apache; so
 - src/style.css — Tailwind, styling responsif, reduced motion, fokus keyboard
 - public/images/ — foto ilustrasi lokal dan fallback.svg
 - public/favicon.svg — identitas ikon api
-- vite.config.js — Vite, React, Tailwind, base relatif
+- vite.config.js — Vite, React, Tailwind, base GitHub Pages
 - IMAGE-CREDITS.md — sumber dan lisensi gambar
 - package-lock.json — versi dependency terkunci
 
@@ -60,3 +60,13 @@ Menu menampilkan enam panel kategori seperti referensi poster, dengan filter Sem
 Validasi: build produksi berhasil. Pengujian DOM menggunakan jsdom berhasil untuk 28 entri menu, 6 filter kategori, format harga, lightbox open/next/previous/wrap/Escape, body scroll lock, dan pengembalian fokus. jsdom digunakan sementara melalui npm --no-save; dependency aplikasi tidak berubah. Script verifikasi lokal berada di .qa/. Pengukuran layout browser serta perbandingan screenshot mobile/desktop masih perlu dilakukan; hasil bukan jaminan pixel-perfect pada semua viewport.
 
 Preview lokal: npm.cmd run dev. Tidak dilakukan deployment.
+
+## GitHub Pages
+
+Workflow: .github/workflows/deploy.yml. Push ke main atau jalankan workflow_dispatch untuk membangun dengan Node.js 24 LTS, npm ci, dan npm run build, lalu menerbitkan dist menggunakan Actions resmi GitHub Pages. Plugin Vite dan desain aplikasi tetap sama.
+
+Pengaturan satu kali di repository: Settings → Pages → Build and deployment → Source → GitHub Actions. Jika belum diaktifkan saat push pertama, jalankan ulang workflow melalui tab Actions setelah mengubah pengaturan tersebut.
+
+URL publik yang dituju: https://samatech-01.github.io/big-fat-steak/
+
+Untuk lokal, jalankan npm run dev dan buka URL Vite dengan akhiran /big-fat-steak/. Untuk hasil produksi, npm run build kemudian npm run preview dan buka http://127.0.0.1:4173/big-fat-steak/. Seluruh URL gambar referensi menggunakan import.meta.env.BASE_URL. Favicon dan metadata gambar memakai substitusi %BASE_URL% dari Vite.
