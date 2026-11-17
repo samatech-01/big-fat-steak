@@ -91,3 +91,11 @@
  .reference-hero-copy>.mobile-hero-description{max-width:51%;font-size:14px}
  .reference-hero .hero-buttons .button{font-size:13px;padding-inline:23px}
 }
+/* Wide gallery viewer: show each image fully, preserving its proportions. */
+.lightbox-dialog{width:min(100%,1320px)}
+.lightbox figure>.reference-photo{width:100%;height:auto;aspect-ratio:16/9!important;max-height:calc(100svh - 230px);background:transparent}
+.lightbox figure>.reference-photo>svg{overflow:hidden!important}
+@media(max-width:480px){
+ .lightbox{padding:65px 12px}
+ .lightbox figure>.reference-photo{aspect-ratio:16/9!important;max-height:calc(100svh - 240px)}
+}
